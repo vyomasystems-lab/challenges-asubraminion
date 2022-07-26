@@ -7,8 +7,8 @@ import random
 @cocotb.test()
 async def test1_mux(dut):
     """Test 1 for mux2"""
-    inputt=[0b01,0b00,0b11,0b10,0b01,0b00,0b10,0b00,0b11,0b10,0b00,0b01,0b10,0b01,0b11,0b01,0b10,0b00,0b10,0b11,0b11,0b01,0b00,0b10,0b01,0b10,0b11,0b11,0b10,0b01,0b00]
-    cocotb.log.info('##### CTB: Develop your test here ########')
+    inputt=[0b01,0b00,0b11,0b10,0b01,0b00,0b10,0b00,0b11,0b10,0b00,0b01,0b10,0b01,0b11,0b01,0b10,0b00,0b10,0b11,0b11,0b01,0b00,0b10,0b01,0b10,0b11,0b11,0b10,0b01,0b11]
+    
     dut.inp0.value=inputt[0]
     dut.inp1.value=inputt[1]
     dut.inp2.value=inputt[2]
@@ -42,18 +42,19 @@ async def test1_mux(dut):
     dut.inp30.value=inputt[30]
 
     for i in range(100):
-        SEL=random.randint(0,30)
+        SEL=random.randint(0,15)
         dut.sel.value=SEL
 
         await Timer (2,units='ns')
         #print(inputt[SEL])
         #print(dut.out.value)
         assert dut.out.value==inputt[SEL], "Randomised test failed, for SEL={A}, output should be {B} (decimal), but is found to be {C} (binary)".format(A=SEL, B=inputt[SEL], C=dut.out.value)
-    
+
+@cocotb.test()   
 async def test2_mux(dut):
     """Test 2 for mux2"""
     inputt=[0b00,0b10,0b01,0b10,0b11,0b10,0b00,0b00,0b10,0b01,0b10,0b00,0b10,0b01,0b00,0b10,0b10,0b11,0b10,0b01,0b01,0b01,0b00,0b10,0b01,0b10,0b11,0b01,0b10,0b01,0b00]
-    cocotb.log.info('##### CTB: Develop your test here ########')
+    
     dut.inp0.value=inputt[0]
     dut.inp1.value=inputt[1]
     dut.inp2.value=inputt[2]
@@ -86,8 +87,8 @@ async def test2_mux(dut):
     dut.inp29.value=inputt[29]
     dut.inp30.value=inputt[30]
 
-    for i in range(100):
-        SEL=random.randint(0,30)
+    for i in range(200):
+        SEL=random.randint(16,30)
         dut.sel.value=SEL
 
         await Timer (2,units='ns')
