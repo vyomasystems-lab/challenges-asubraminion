@@ -16,8 +16,7 @@ async def test_seq_bug1(dut):
 
     clock = Clock(dut.clk, 10, units="us")  # Create a 10us period clock on port clk
     cocotb.start_soon(clock.start())        # Start the clock
-
-    iparr=list()
+    
     # reset
     dut.reset.value = 1
     dut.inp_bit.value=0
@@ -25,82 +24,121 @@ async def test_seq_bug1(dut):
     await FallingEdge(dut.clk)  
     dut.reset.value = 0
 
-    await FallingEdge(dut.clk)
-    ip=random.randint(0,1)
-    dut.inp_bit.value=ip
-    iparr.append(ip)
-
-    await FallingEdge(dut.clk)
-    ip1=random.randint(0,1)
-    dut.inp_bit.value=ip1
-    iparr.append(ip1)
-
-    await FallingEdge(dut.clk)
-    ip2=random.randint(0,1)
-    dut.inp_bit.value=ip2
-    iparr.append(ip2)
-
-    await FallingEdge(dut.clk)
-    ip3=random.randint(0,1)
-    dut.inp_bit.value=ip3
-    iparr.append(ip3)
-
+    N=6
+    iparr=list()
+    for i in range(0,N):
+        await FallingEdge(dut.clk)
+        iparr.append(random.randint(0,1))
+        dut.inp_bit.value=iparr[i]
     print(iparr)
-
-    
     
     if (iparr[0]==0):
         state='0'
     else:
         state='1'
     
-    if (state=='1'):
-        if(iparr[1]==0):
-            state='10'
-        else:
-            state='1'
-    else:
+    if (state=='0'):
         if(iparr[1]==0):
             state='0'
+        else:
+            state='1'
+    elif (state=='1'):
+        if(iparr[1]==0):
+            state='10'
         else:
             state='1'
 
-    if (state=='1'):
-        if (iparr[2]==0):
-            state='10'
-        elif (iparr[2]==1):
-            state='1'
-    elif (state=='0'):
+    if (state=='0'):
         if (iparr[2]==0):
             state='0'
-        elif (iparr[2]==1):
+        else:
+            state='1'
+    elif (state=='1'):
+        if (iparr[2]==0):
+            state='10'
+        else:
             state='1'
     elif (state=='10'):
         if (iparr[2]==0):
             state='0'
-        elif (iparr[2]==1):
+        else:
             state='101'
     
     if (state=='0'):
         if (iparr[3]==0):
             state='0'
-        elif (iparr[3]==1):
+        else:
             state='1'
     elif (state=='1'):
         if (iparr[3]==0):
             state='10'
-        elif (iparr[3]==1):
+        else:
             state='1'
     elif (state=='10'):
         if (iparr[3]==0):
             state='0'
-        elif (iparr[3]==1):
+        else:
             state='101'
     elif (state=='101'):
         if (iparr[3]==0):
             state='0'
-        elif (iparr[3]==1):
+        else:
             state='1011'
+
+    if (state=='0'):
+        if (iparr[4]==0):
+            state='0'
+        else:
+            state='1'
+    elif (state=='1'):
+        if (iparr[4]==0):
+            state='10'
+        else:
+            state='1'
+    elif (state=='10'):
+        if (iparr[4]==0):
+            state='0'
+        else:
+            state='101'
+    elif (state=='101'):
+        if (iparr[4]==0):
+            state='0'
+        else:
+            state='1011'
+    elif (state=='1011'):
+        if (iparr[4]==0): #for 1011011- op1
+            state='10'
+        else:
+            state='1'
+    
+    if (state=='0'):
+        if (iparr[5]==0):
+            state='0'
+        else:
+            state='1'
+    elif (state=='1'):
+        if (iparr[5]==0):
+            state='10'
+        else:
+            state='1'
+    elif (state=='10'):
+        if (iparr[5]==0):
+            state='0'
+        else:
+            state='101'
+    elif (state=='101'):
+        if (iparr[5]==0):
+            state='0'
+        else:
+            state='1011'
+    elif (state=='1011'):
+        if (iparr[5]==0): #for 101101- op1
+            state='10'
+        else:
+            state='1'
+    
+    
+    #check expop at each posedge clk
 
     await FallingEdge(dut.clk)
     await RisingEdge(dut.clk)
@@ -108,8 +146,6 @@ async def test_seq_bug1(dut):
         expop=1
     else:
         expop=0
-
-
 
 
     print(expop)
