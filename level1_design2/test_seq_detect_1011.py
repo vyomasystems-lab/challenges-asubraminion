@@ -105,14 +105,15 @@ async def test_seq_bug1(dut):
     await FallingEdge(dut.clk)
     await RisingEdge(dut.clk)
     if (state=='1011'):
-        dut.seq_seen.value=1
+        expop=1
     else:
-        dut.seq_seen.value=0
+        expop=0
 
 
 
 
+    print(expop)
+    print(dut.seq_seen.value)
     
-    
-    assert dut.seq_seen.value==state, "Randomised test failed. Expected output {B}, actual output {C}".format(B=state, C=dut.seq_seen.value)
+    assert dut.seq_seen.value==expop, "Randomised test failed. Expected output {B}, actual output {C}".format(B=expop, C=dut.seq_seen.value)
 #await 2 ns?
