@@ -1,6 +1,6 @@
 module seq_detect_1011(seq_seen, inp_bit, reset, clk);
 
-  output seq_seen; 
+    output seq_seen;
   input inp_bit;
   input reset;
   input clk;
@@ -18,7 +18,7 @@ module seq_detect_1011(seq_seen, inp_bit, reset, clk);
   assign seq_seen = current_state == SEQ_1011 ? 1 : 0;
 
   // state transition
-  always @(posedge clk) 
+  always @(posedge clk)
   begin
     if(reset)
     begin
@@ -31,7 +31,7 @@ module seq_detect_1011(seq_seen, inp_bit, reset, clk);
   end
 
   // state transition based on the input and current state
-  always @(inp_bit or current_state) #rst?
+  always @(inp_bit or current_state)
   begin
     case(current_state)
       IDLE:
@@ -44,7 +44,7 @@ module seq_detect_1011(seq_seen, inp_bit, reset, clk);
       SEQ_1:
       begin
         if(inp_bit == 1)
-          next_state = SEQ_1; #changed from IDLE
+          next_state = IDLE;
         else
           next_state = SEQ_10;
       end
@@ -53,7 +53,7 @@ module seq_detect_1011(seq_seen, inp_bit, reset, clk);
         if(inp_bit == 1)
           next_state = SEQ_101;
         else
-          next_state = IDLE; 
+          next_state = IDLE;
       end
       SEQ_101:
       begin
@@ -62,9 +62,12 @@ module seq_detect_1011(seq_seen, inp_bit, reset, clk);
         else
           next_state = IDLE;
       end
-      SEQ_1011:
+      SEQ_1011: #corrected- sequence detector is overlapping so go to SEQ_10 if next bit is 0
       begin
-        next_state = IDLE;
+        if (inp_bit == 1)
+          next_state = IDLE;
+        else
+          next_state = SEQ_10
       end
     endcase
   end
