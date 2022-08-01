@@ -13,6 +13,8 @@ dut.sel.value=SEL
 
 Test scenario-
 Random test values are given
+Output is checked as 
+assert dut.out.value==inputt[SEL]
 
 Error observed-
 AssertionError: Randomised test failed, for SEL=13, output should be 1 (decimal), but is found to be 10 (binary)
@@ -23,4 +25,4 @@ Corrected Verilog code is available in mux_corrected.v
 
 
 
-assert dut.out.value==inputt[SEL]
+
