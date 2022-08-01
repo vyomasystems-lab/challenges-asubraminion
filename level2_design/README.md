@@ -5,9 +5,17 @@ Randomised inputs are given for 10 iterations to observe possible failures of th
 Input failure combination-
 
 dut.mav_putvalue_src1.value = 0xa
+
+
 dut.mav_putvalue_src2.value = 0x9
+
+
 dut.mav_putvalue_src3.value = 0x3
+
+
 dut.mav_putvalue_instr.value = 0x101010b3
+
+
 (Output enable is set as high) 
 
 Error-
